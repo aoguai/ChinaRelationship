@@ -72,7 +72,7 @@ def FilteHelper(text):
 def dataValueByKeys(data_text):
     if(isChinese(data_text)):  # 判断是否含有中文，含有的是特殊回复
         return data_text
-    dataName = '/data.json'
+    dataName = 'D:/zm/ChinaRelationship-main/data.json'
     if not os.path.isfile(dataName):
         return "data文件不存在"
     fo = open(dataName, 'r', encoding='utf-8')
@@ -89,7 +89,7 @@ def dataValueByKeys(data_text):
             return "未找到"
     except Exception as e:
         result = ""
-        resultList = list(set(FilteHelper(strInsert(data_text, 0, ',')).split(",")))
+        resultList = FilteHelper(strInsert(data_text, 0, ',')).split(",")
         for key in resultList:
             result = result + dataValueByKeys(key)
         return result
