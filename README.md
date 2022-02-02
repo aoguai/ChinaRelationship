@@ -81,6 +81,7 @@ def FilteHelper(text):
 #### 算法主要函数三：dataValueByKeys
 该函数主要负责**从数据源中查找对应 key 的结果**
 ```python
+# 从数据源中查找对应 key 的结果
 def dataValueByKeys(data_text):
     if(isChinese(data_text)):  # 判断是否含有中文，含有的是特殊回复
         return data_text
