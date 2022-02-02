@@ -49,7 +49,7 @@ def transformTitleToKey(text):
     return result
 ```
 这里简化了原参考[作者](https://github.com/joywt/relationship)的写法，更 ~~简单（不是）~~ 符合计算器设定
-![计算器](http://blog.520004.xyz/wp-content/uploads/2022/02/1643811756-IMG_5539-637x1024-1.png)
+![计算器](https://github.com/aoguai/ChinaRelationship/blob/main/images/relationship_0.png)
 #### 算法主要函数二：FilteHelper
 该函数主要负责**去重和简化**
 ```python
@@ -115,16 +115,16 @@ def dataValueByKeys(data_text):
 ```
 
 ### 输出与效果
-![relationship_1](http://blog.520004.xyz/wp-content/uploads/2022/02/1643814544-relationship_1.png)
-![relationship_2](http://blog.520004.xyz/wp-content/uploads/2022/02/1643814545-relationship_2.png)
-![relationship_3](http://blog.520004.xyz/wp-content/uploads/2022/02/1643814545-relationship_3.png)
-![relationship_4](http://blog.520004.xyz/wp-content/uploads/2022/02/1643814545-relationship_4.png)
+![relationship_1](https://github.com/aoguai/ChinaRelationship/blob/main/images/relationship_1.png)
+![relationship_2](https://github.com/aoguai/ChinaRelationship/blob/main/images/relationship_2.png)
+![relationship_3](https://github.com/aoguai/ChinaRelationship/blob/main/images/relationship_3.png)
+![relationship_4](https://github.com/aoguai/ChinaRelationship/blob/main/images/relationship_4.png)
  基本达到效果
  
 ## 一些细节与已知问题
- 首先，是性别：如果‘我’是女性，那么‘我的父亲的儿子’可以为[‘哥哥’，‘弟弟’]，而不可以包含‘我’。（上述代码没实现）
-另外，关于夫妻关系：在正常情况下，男性称谓只可以有‘妻子’，女性称谓只可以有‘丈夫’。（上述代码已实现）
-第三，多种可能：‘我的父亲的儿子’ 可以是[‘我’，‘哥哥’，‘弟弟’]，再若是再往后计算，如‘我的父亲的儿子的儿子’ ，需要同时考虑‘我的儿子’，‘哥哥的儿子’，‘弟弟的儿子’这三种可能。（上述代码已实现）
+ 首先，是性别：如果‘我’是女性，那么‘我的父亲的儿子’可以为[‘哥哥’，‘弟弟’]，而不可以包含‘我’。（上述代码没实现）<br>
+另外，关于夫妻关系：在正常情况下，男性称谓只可以有‘妻子’，女性称谓只可以有‘丈夫’。（上述代码已实现）<br>
+第三，多种可能：‘我的父亲的儿子’ 可以是[‘我’，‘哥哥’，‘弟弟’]，再若是再往后计算，如‘我的父亲的儿子的儿子’ ，需要同时考虑‘我的儿子’，‘哥哥的儿子’，‘弟弟的儿子’这三种可能。（上述代码已实现）<br>
 已知问题：某些涉及自己的多重可能还存在莫名BUG
 
 ## 参考
