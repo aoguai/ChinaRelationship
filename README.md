@@ -101,7 +101,7 @@ def dataValueByKeys(data_text):
             return "未找到"
     except Exception as e:
         result = ""
-        resultList = list(set(FilteHelper(strInsert(data_text, 0, ',')).split(",")))
+        resultList = FilteHelper(strInsert(data_text, 0, ',')).split(",")
         for key in resultList:
             result = result + dataValueByKeys(key)
         return result
