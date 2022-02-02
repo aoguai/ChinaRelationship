@@ -19,15 +19,7 @@ def strInsert(strOrigin, pos, strAdd):
 
 # 将文字转换成关系符号
 def transformTitleToKey(text):
-    result = text.replace("的", ",").replace("我", "").replace("爸爸", "f").replace("妈妈",
-                                                                                "m").replace(
-        "老公",
-        "h").replace(
-        "老婆", "w").replace("儿子", "s").replace("女儿", "d").replace("兄弟", "xd").replace("哥哥", "ob").replace("弟弟",
-                                                                                                         "lb").replace(
-        "姐妹",
-        "xs").replace(
-        "姐姐", "os").replace("妹妹", "ls").strip(",")
+    result = text.replace("的", ",").replace("我", "").replace("爸爸", "f").replace("父亲", "f").replace("妈妈","m").replace("母亲", "m").replace("爷爷","f,f").replace("奶奶","m,m").replace("老公","h").replace("丈夫", "h").replace("老婆", "w").replace("妻子", "h").replace("儿子", "s").replace("女儿", "d").replace("兄弟", "xd").replace("哥哥", "ob").replace("弟弟","lb").replace("姐妹","xs").replace("姐姐", "os").replace("妹妹", "ls").strip(",")
     return result
 
 
