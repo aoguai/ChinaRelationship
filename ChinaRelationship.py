@@ -10,11 +10,14 @@ import ijson as ijson
 # 在字符串指定位置插入字符
 # str_origin：源字符串  pos：插入位置  str_add：待插入的字符串
 #
-def strInsert(strOrigin, pos, strAdd):
-    strList = list(strOrigin)  # 字符串转list
-    strList.insert(pos, strAdd)  # 在指定位置插入字符串
-    strOut = ''.join(strList)  # 空字符连接
-    return strOut
+
+# 检查整个字符串是否包含中文
+def isChinese(string):
+    for ch in string:
+        if u'\u4e00' <= ch <= u'\u9fff':
+            return True
+
+    return False
 
 
 # 将文字转换成关系符号
@@ -27,7 +30,10 @@ def errorMessage(key):
     message = key
     if key == "ob,h" or key == "xb,h" or key == "lb,h" or key == "os,w" or key == "ls,w" or key == "xs,w" or key == "f,h" or key == "m,w" or key == "d,w" or key == "s,h":
         message = "根据我国法律暂不支持同性婚姻，怎么称呼你自己决定吧"
+    elif (key.find("h,h") != -1 or key.find("w,w") != -1):
+        message = "根据我国法律暂不支持重婚，怎么称呼你自己决定吧"
     return message
+
 
 
 # 去重和简化
@@ -64,7 +70,8 @@ def FilteHelper(text):
 
 # 从数据源中查找对应 key 的结果
 def dataValueByKeys(data_text):
-    print(data_text)
+    if(isChinese(data_text)):  # 判断是否含有中文，含有的是特殊回复
+        return data_text
     dataName = '/data.json'
     if not os.path.isfile(dataName):
         return "data文件不存在"
@@ -90,15 +97,11 @@ def dataValueByKeys(data_text):
 
 def calculate(text):
     keys = errorMessage(transformTitleToKey(text))
-    if keys != "根据我国法律暂不支持同性婚姻，怎么称呼你自己决定吧":
-        result=""
-        resultList = list(set(FilteHelper(strInsert(dataValueByKeys(FilteHelper(keys)), 0, ',')).split("\\")))
-        for key in resultList:
-            result = result + key.strip(",") + '\\'
-        return result.strip("\\")
-    else:
-        return keys
-
+    result = ""
+    resultList = list(set(FilteHelper(strInsert(dataValueByKeys(FilteHelper(keys)), 0, ',')).split("\\")))
+    for key in resultList:
+        result = result + key.strip(",") + '\\'
+    return result.strip("\\")
 
 txt = input()
 print(calculate(txt))
