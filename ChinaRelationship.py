@@ -33,7 +33,7 @@ def errorMessage(key):
 # 去重和简化
 def FilteHelper(text):
     result = text
-    filterName = 'D:/zm/ChinaRelationship-main/filter.json'  # filter.json文件路径
+    filterName = '/filter.json'  # filter.json文件路径
     if not os.path.isfile(filterName):
         return "filterName文件不存在"
     with open(filterName, "r") as f:
@@ -65,7 +65,7 @@ def FilteHelper(text):
 # 从数据源中查找对应 key 的结果
 def dataValueByKeys(data_text):
     print(data_text)
-    dataName = 'D:/zm/ChinaRelationship-main/data.json'
+    dataName = '/data.json'
     if not os.path.isfile(dataName):
         return "data文件不存在"
     fo = open(dataName, 'r', encoding='utf-8')
