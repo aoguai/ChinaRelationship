@@ -25,7 +25,7 @@ def transformTitleToKey(text):
 
 def errorMessage(key):
     message = key
-    if key == "ob,h" or key == "xb,h" or key == "lb,h" or key == "os,w" or key == "ls,w" or key == "xs,w":
+    if key == "ob,h" or key == "xb,h" or key == "lb,h" or key == "os,w" or key == "ls,w" or key == "xs,w" or key == "f,h" or key == "m,w":
         message = "根据我国法律暂不支持同性婚姻，怎么称呼你自己决定吧"
     return message
 
@@ -33,7 +33,7 @@ def errorMessage(key):
 # 去重和简化
 def FilteHelper(text):
     result = text
-    filterName = '/filter.json'  # filter.json文件路径
+    filterName = 'D:/zm/ChinaRelationship-main/filter.json'  # filter.json文件路径
     if not os.path.isfile(filterName):
         return "filterName文件不存在"
     with open(filterName, "r") as f:
@@ -64,7 +64,8 @@ def FilteHelper(text):
 
 # 从数据源中查找对应 key 的结果
 def dataValueByKeys(data_text):
-    dataName = '/data.json'
+    print(data_text)
+    dataName = 'D:/zm/ChinaRelationship-main/data.json'
     if not os.path.isfile(dataName):
         return "data文件不存在"
     fo = open(dataName, 'r', encoding='utf-8')
@@ -81,7 +82,7 @@ def dataValueByKeys(data_text):
             return "未找到"
     except Exception as e:
         result = ""
-        resultList = FilteHelper(strInsert(data_text, 0, ',')).split(",")
+        resultList = list(set(FilteHelper(strInsert(data_text, 0, ',')).split(",")))
         for key in resultList:
             result = result + dataValueByKeys(key)
         return result
@@ -90,8 +91,11 @@ def dataValueByKeys(data_text):
 def calculate(text):
     keys = errorMessage(transformTitleToKey(text))
     if keys != "根据我国法律暂不支持同性婚姻，怎么称呼你自己决定吧":
-        result = dataValueByKeys(FilteHelper(keys))
-        return result
+        result=""
+        resultList = list(set(FilteHelper(strInsert(dataValueByKeys(FilteHelper(keys)), 0, ',')).split("\\")))
+        for key in resultList:
+            result = result + key.strip(",") + '\\'
+        return result.strip("\\")
     else:
         return keys
 
