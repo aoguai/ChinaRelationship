@@ -96,7 +96,7 @@ def dataValueByKeys(data_text):
 
 
 def calculate(text):
-    keys = errorMessage(transformTitleToKey(txt))
+    keys = errorMessage(transformTitleToKey(text))
     if keys != "根据我国法律暂不支持同性婚姻，怎么称呼你自己决定吧":
         result = dataValueByKeys(FilteHelper(keys))
         return result
