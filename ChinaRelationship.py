@@ -25,7 +25,7 @@ def transformTitleToKey(text):
 
 def errorMessage(key):
     message = key
-    if key == "ob,h" or key == "xb,h" or key == "lb,h" or key == "os,w" or key == "ls,w" or key == "xs,w" or key == "f,h" or key == "m,w":
+    if key == "ob,h" or key == "xb,h" or key == "lb,h" or key == "os,w" or key == "ls,w" or key == "xs,w" or key == "f,h" or key == "m,w" or key == "d,w" or key == "s,h":
         message = "根据我国法律暂不支持同性婚姻，怎么称呼你自己决定吧"
     return message
 
