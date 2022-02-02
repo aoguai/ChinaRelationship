@@ -46,7 +46,6 @@ def transformTitleToKey(text):
 该函数主要负责**去重和简化**
 ```python
 # 去重和简化
-# 去重和简化
 def FilteHelper(text):
     result = text
     filterName = '/filter.json'  # filter.json文件路径
@@ -83,7 +82,9 @@ def FilteHelper(text):
 该函数主要负责**从数据源中查找对应 key 的结果**
 ```python
 def dataValueByKeys(data_text):
-    dataName = '/data.json'  # data.json文件路径
+    if(isChinese(data_text)):  # 判断是否含有中文，含有的是特殊回复
+        return data_text
+    dataName = 'D:/zm/ChinaRelationship-main/data.json'
     if not os.path.isfile(dataName):
         return "data文件不存在"
     fo = open(dataName, 'r', encoding='utf-8')
@@ -98,9 +99,9 @@ def dataValueByKeys(data_text):
             return text.strip("\\")
         else:
             return "未找到"
-    except Exception as e: # 处理多结果
+    except Exception as e:
         result = ""
-        resultList = FilteHelper(strInsert(data_text, 0, ',')).split(",")
+        resultList = list(set(FilteHelper(strInsert(data_text, 0, ',')).split(",")))
         for key in resultList:
             result = result + dataValueByKeys(key)
         return result
