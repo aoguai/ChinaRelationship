@@ -119,7 +119,7 @@ def dataValueByKeys(data_text):
 ![relationship_2](https://github.com/aoguai/ChinaRelationship/blob/main/images/relationship_2.png)
 ![relationship_3](https://github.com/aoguai/ChinaRelationship/blob/main/images/relationship_3.png)
 ![relationship_4](https://github.com/aoguai/ChinaRelationship/blob/main/images/relationship_4.png)
- 基本达到效果
+ <br>基本达到效果
  
 ## 一些细节与已知问题
  首先，是性别：如果‘我’是女性，那么‘我的父亲的儿子’可以为[‘哥哥’，‘弟弟’]，而不可以包含‘我’。（上述代码没实现）<br>
