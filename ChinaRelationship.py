@@ -28,7 +28,7 @@ def transformTitleToKey(text):
 
 def errorMessage(key):
     message = key
-    if key == "ob,h" or key == "xb,h" or key == "lb,h" or key == "os,w" or key == "ls,w" or key == "xs,w" or key == "f,h" or key == "m,w" or key == "d,w" or key == "s,h":
+    if key.find("ob,h") != -1 or key.find("xb,h") != -1 or key.find("lb,h") != -1 or key.find("os,w") != -1 or key.find("ls,w") != -1 or key.find("xs,w") != -1 or key.find("f,h") != -1 or key.find("m,w") != -1 or key.find("d,w") != -1 or key.find("s,h") != -1:
         message = "根据我国法律暂不支持同性婚姻，怎么称呼你自己决定吧"
     elif (key.find("h,h") != -1 or key.find("w,w") != -1):
         message = "根据我国法律暂不支持重婚，怎么称呼你自己决定吧"
