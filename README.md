@@ -48,32 +48,62 @@ def transformTitleToKey(text):
 # 去重和简化
 def FilteHelper(text):
     result = text
-    filterName = '/filter.json'  # filter.json文件路径
+    filterName = 'D:/zm/ChinaRelationship-main/filter.json'  # filter.json文件路径
     if not os.path.isfile(filterName):
         return "filterName文件不存在"
     with open(filterName, "r") as f:
         obj = list(ijson.items(f, 'filter'))
     for i in range(len(obj[0])):
         users = obj[0][i]['exp']
-        if re.match(obj[0][i]['exp'], result):  # 符合正则
-            result1 = re.findall(obj[0][i]['exp'], result)
-            result = obj[0][i]['str']
+        if users == result:
+            return obj[0][i]['str']
+        elif re.match(obj[0][i]['exp'], result):  # 符合正则
+            result1 = re.findall(obj[0][i]['exp'], result)  # 返回string中所有与pattern匹配的全部字符串,返回形式为数组
+            print(result1)
             a = 0
             result2 = ""
-            try:
-                for i in result1:
-                    result = result.replace("$" + str(a + 1), result1[a])
-                    a = a + 1
-                while result.find("#") != -1:
-                    result_l = result
-                    resultList = list(set(result_l.split("#")))  # # 是隔断符，所以分割文本
-                    for key in resultList:
-                        result = FilteHelper(key)
-                        if (result.find("#") == -1):  # 当关系符号不含#时加入最终结果中
-                            result2 = result2 + result
-                return result2
-            except Exception as e:
-                return text
+            if len(result1)>1:
+                try:
+                    for i in len(result1):
+                        result = result.replace("$" + str(a + 1), result1[a])
+                        a = a + 1
+                    if result.find("#") != -1:
+                        result_l = result
+                        resultList = list(set(result_l.split("#")))  # # 是隔断符，所以分割文本
+                        for key in resultList:
+                            result = FilteHelper(key.strip(","))
+                            if (result.find("#") == -1):  # 当关系符号不含#时加入最终结果中
+                                result2 = result2 + result
+                        return result2
+                    else:
+                        return text
+                except Exception as e:
+                    return text
+            else:
+                return str(result1).replace("[\'", "").replace("\']", "")
+        elif re.match(obj[0][i]['exp'], strInsert(result, 0, ',')):  # 符合正则
+            result1 = re.findall(obj[0][i]['exp'], strInsert(result, 0, ','))  # 返回string中所有与pattern匹配的全部字符串,返回形式为数组
+            a = 0
+            result2 = ""
+            if len(result1)>1:
+                try:
+                    for i in len(result1):
+                        result = result.replace("$" + str(a + 1), result1[a])
+                        a = a + 1
+                    if result.find("#") != -1:
+                        result_l = result
+                        resultList = list(set(result_l.split("#")))  # # 是隔断符，所以分割文本
+                        for key in resultList:
+                            result = FilteHelper(key.strip(","))
+                            if (result.find("#") == -1):  # 当关系符号不含#时加入最终结果中
+                                result2 = result2 + result
+                        return result2
+                    else:
+                        return text
+                except Exception as e:
+                    return text
+            else:
+                return str(result1).replace("[\'", "").replace("\']", "")
     return text
 ```
 这里原参考[作者](https://github.com/joywt/relationship)解释的有点乱，我就以我个人见解参考着写了出来...能跑....有错欢迎指出
@@ -85,7 +115,7 @@ def FilteHelper(text):
 def dataValueByKeys(data_text):
     if(isChinese(data_text)):  # 判断是否含有中文，含有的是特殊回复
         return data_text
-    dataName = 'D:/zm/ChinaRelationship-main/data.json'
+    dataName = 'D:/zm/ChinaRelationship-main/data.json'  # data.json文件路径
     if not os.path.isfile(dataName):
         return "data文件不存在"
     fo = open(dataName, 'r', encoding='utf-8')
