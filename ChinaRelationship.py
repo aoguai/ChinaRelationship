@@ -10,6 +10,11 @@ import ijson as ijson
 # 在字符串指定位置插入字符
 # str_origin：源字符串  pos：插入位置  str_add：待插入的字符串
 #
+def strInsert(strOrigin, pos, strAdd):
+    strList = list(strOrigin)  # 字符串转list
+    strList.insert(pos, strAdd)  # 在指定位置插入字符串
+    strOut = ''.join(strList)  # 空字符连接
+    return strOut
 
 # 检查整个字符串是否包含中文
 def isChinese(string):
@@ -22,7 +27,12 @@ def isChinese(string):
 
 # 将文字转换成关系符号
 def transformTitleToKey(text):
-    result = text.replace("的", ",").replace("我", "").replace("爸爸", "f").replace("父亲", "f").replace("妈妈","m").replace("母亲", "m").replace("爷爷","f,f").replace("奶奶", "f,m").replace("外公", "m,f").replace("姥爷", "m,f").replace("外婆", "m,m").replace("姥姥", "m,m").replace("老公","h").replace("丈夫", "h").replace("老婆", "w").replace("妻子", "h").replace("儿子", "s").replace("女儿", "d").replace("兄弟", "xd").replace("哥哥", "ob").replace("弟弟","lb").replace("姐妹","xs").replace("姐姐", "os").replace("妹妹", "ls").strip(",")
+    result = text.replace("的", ",").replace("我", "").replace("爸爸", "f").replace("父亲", "f").replace("妈妈", "m").replace(
+        "母亲", "m").replace("爷爷", "f,f").replace("奶奶", "f,m").replace("外公", "m,f").replace("姥爷", "m,f").replace("外婆", "m,m").replace("姥姥", "m,m").replace("老公", "h").replace("丈夫", "h").replace("老婆",
+                                                                                                           "w").replace(
+        "妻子", "h").replace("儿子", "s").replace("女儿", "d").replace("兄弟", "xd").replace("哥哥", "ob").replace("弟弟",
+                                                                                                         "lb").replace(
+        "姐妹", "xs").replace("姐姐", "os").replace("妹妹", "ls").strip(",")
     return result
 
 
@@ -35,7 +45,6 @@ def errorMessage(key):
     return message
 
 
-
 # 去重和简化
 def FilteHelper(text):
     result = text
@@ -46,33 +55,62 @@ def FilteHelper(text):
         obj = list(ijson.items(f, 'filter'))
     for i in range(len(obj[0])):
         users = obj[0][i]['exp']
-        if re.match(obj[0][i]['exp'], result):  # 符合正则
-            result1 = re.findall(obj[0][i]['exp'], result)
-            result = obj[0][i]['str']
+        if users == result:
+            return obj[0][i]['str']
+        elif re.match(obj[0][i]['exp'], result):  # 符合正则
+            result1 = re.findall(obj[0][i]['exp'], result)  # 返回string中所有与pattern匹配的全部字符串,返回形式为数组
+            print(result1)
             a = 0
             result2 = ""
-            try:
-                for i in result1:
-                    result = result.replace("$" + str(a + 1), result1[a])
-                    a = a + 1
-                while result.find("#") != -1:
-                    result_l = result
-                    resultList = list(set(result_l.split("#")))  # # 是隔断符，所以分割文本
-                    for key in resultList:
-                        result = FilteHelper(key)
-                        if (result.find("#") == -1):  # 当关系符号不含#时加入最终结果中
-                            result2 = result2 + result
-                return result2
-            except Exception as e:
-                return text
+            if len(result1)>1:
+                try:
+                    for i in len(result1):
+                        result = result.replace("$" + str(a + 1), result1[a])
+                        a = a + 1
+                    if result.find("#") != -1:
+                        result_l = result
+                        resultList = list(set(result_l.split("#")))  # # 是隔断符，所以分割文本
+                        for key in resultList:
+                            result = FilteHelper(key.strip(","))
+                            if (result.find("#") == -1):  # 当关系符号不含#时加入最终结果中
+                                result2 = result2 + result
+                        return result2
+                    else:
+                        return text
+                except Exception as e:
+                    return text
+            else:
+                return str(result1).replace("[\'", "").replace("\']", "")
+        elif re.match(obj[0][i]['exp'], strInsert(result, 0, ',')):  # 符合正则
+            result1 = re.findall(obj[0][i]['exp'], strInsert(result, 0, ','))  # 返回string中所有与pattern匹配的全部字符串,返回形式为数组
+            a = 0
+            result2 = ""
+            if len(result1)>1:
+                try:
+                    for i in len(result1):
+                        result = result.replace("$" + str(a + 1), result1[a])
+                        a = a + 1
+                    if result.find("#") != -1:
+                        result_l = result
+                        resultList = list(set(result_l.split("#")))  # # 是隔断符，所以分割文本
+                        for key in resultList:
+                            result = FilteHelper(key.strip(","))
+                            if (result.find("#") == -1):  # 当关系符号不含#时加入最终结果中
+                                result2 = result2 + result
+                        return result2
+                    else:
+                        return text
+                except Exception as e:
+                    return text
+            else:
+                return str(result1).replace("[\'", "").replace("\']", "")
     return text
-
 
 # 从数据源中查找对应 key 的结果
 def dataValueByKeys(data_text):
     if(isChinese(data_text)):  # 判断是否含有中文，含有的是特殊回复
         return data_text
-    dataName = 'D:/zm/ChinaRelationship-main/data.json'
+    dataName = '/data.json'  # data.json文件路径
     if not os.path.isfile(dataName):
         return "data文件不存在"
     fo = open(dataName, 'r', encoding='utf-8')
@@ -98,10 +136,11 @@ def dataValueByKeys(data_text):
 def calculate(text):
     keys = errorMessage(transformTitleToKey(text))
     result = ""
-    resultList = list(set(FilteHelper(strInsert(dataValueByKeys(FilteHelper(keys)), 0, ',')).split("\\")))
+    resultList = list(set(dataValueByKeys(FilteHelper(keys)).split("\\")))
     for key in resultList:
         result = result + key.strip(",") + '\\'
     return result.strip("\\")
+
 
 txt = input()
 print(calculate(txt))
